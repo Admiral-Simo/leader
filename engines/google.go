@@ -36,6 +36,8 @@ func NewGoogleSearchEngine() *GoogleSearchEngine {
 
 // GetWebsitesByQuery returns a list of websites based on the query by scraping Google search results.
 func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
+	query = strings.ReplaceAll(query, " ", "+")
+
 	var websites []string
 
 	// On every anchor element which has an href attribute call the callback
@@ -63,6 +65,8 @@ func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
 
 // GetEmailsAddressByQuery returns a map of email addresses found on websites based on the query.
 func (g GoogleSearchEngine) GetEmailsAddressByQuery(query string) map[string]map[string]struct{} {
+	query = strings.ReplaceAll(query, " ", "+")
+
 	websites := g.GetWebsitesByQuery(query)
 	emailData := make(map[string]map[string]struct{})
 	var mu sync.Mutex
