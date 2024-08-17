@@ -18,7 +18,6 @@ type API struct {
 	app    *gin.Engine
 }
 
-// APIBuilder provides a builder for the API struct
 type APIBuilder struct {
 	port   int
 	dbURL  string
@@ -27,35 +26,25 @@ type APIBuilder struct {
 	app    *gin.Engine
 }
 
-// NewAPIBuilder creates a new instance of APIBuilder
 func NewAPIBuilder() *APIBuilder {
-	return &APIBuilder{
-		port:   4000,                                                                      // default port
-		dbURL:  "postgres://postgres:my_password@localhost:5432/sqlctest?sslmode=disable", // default DB URL
-		engine: engines.NewGoogleSearchEngine(),                                           // default engine
-		app:    gin.Default(),                                                             // default engine
-	}
+	return &APIBuilder{}
 }
 
-// WithPort sets the port for the API
 func (b *APIBuilder) WithPort(port int) *APIBuilder {
 	b.port = port
 	return b
 }
 
-// WithDBURL sets the database URL for the API
 func (b *APIBuilder) WithDBURL(dbURL string) *APIBuilder {
 	b.dbURL = dbURL
 	return b
 }
 
-// WithSearchEngine sets the search engine for the API
 func (b *APIBuilder) WithSearchEngine(engine engines.SearchEngine) *APIBuilder {
 	b.engine = engine
 	return b
 }
 
-// Build constructs the API instance with the specified configuration
 func (b *APIBuilder) Build() *API {
 	ctx := context.Background()
 
@@ -70,19 +59,20 @@ func (b *APIBuilder) Build() *API {
 		port:   b.port,
 		store:  queries,
 		engine: b.engine,
-		app:    b.app,
+		app:    gin.Default(),
 	}
 }
 
-// StartServer starts the server (implementation to be added)
 func (a *API) StartServer() {
 	a.registerMiddlewares()
 	a.registerRoutes()
 	port := fmt.Sprintf(":%d", a.port)
-	fmt.Println("starting server at port ", port)
-	// Server logic goes here
+
+	// serve static files in public/ directory
+	a.app.Static("/public", "./public")
+
+	a.app.Run(port)
 }
 
-// StartServer registers the server (implementation to be added)
 func (a *API) registerMiddlewares() {
 }
