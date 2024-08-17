@@ -1,27 +1,132 @@
 package layout
 
-templ Base(title string) {
-<!DOCTYPE html>
-<html lang="en">
+templ Base(title string, loggedIn bool) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="icon" href="/public/favicon.ico" type="image/x-icon"/>
+			<title>{ title }</title>
+			// tailwindcss cdn
+			<script src="https://cdn.tailwindcss.com"></script>
+			// alpinejs cdn
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+			// htmx cdn
+			<script src="https://unpkg.com/htmx.org@2.0.2" integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ" crossorigin="anonymous"></script>
+		</head>
+		<body>
+			@Navbar(loggedIn)
+			{ children... }
+			@Footer()
+		</body>
+	</html>
+}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
-    <title>{ title }</title>
-    // tailwindcss cdn
-    <script src="https://cdn.tailwindcss.com"></script>
-    // alpinejs cdn
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
-    // htmx cdn
-    <script src="https://unpkg.com/htmx.org@2.0.2"
-        integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
-        crossorigin="anonymous"></script>
-</head>
+templ Navbar(loggedIn bool) {
+	<nav class="bg-gradient-to-r from-purple-500 to-indigo-600 p-4" x-data="{ open: false }">
+		<div class="container mx-auto flex justify-between items-center">
+			<a href="/" class="text-white font-bold text-xl">
+				EleadGen
+			</a>
+			<div class="hidden md:flex space-x-6">
+				<a href="#" class="text-white hover:text-gray-300 transition duration-300">Home</a>
+				<a href="#" class="text-white hover:text-gray-300 transition duration-300">About</a>
+				<a href="#" class="text-white hover:text-gray-300 transition duration-300">Services</a>
+				<a href="#" class="text-white hover:text-gray-300 transition duration-300">Contact</a>
+				if loggedIn {
+					<a href="/logout" class="text-white hover:text-gray-300 transition duration-300">Logout</a>
+				} else {
+					<a href="/login" class="text-white hover:text-gray-300 transition duration-300">Login</a>
+					<a href="/signup" class="text-white hover:text-gray-300 transition duration-300">Signup</a>
+				}
+			</div>
+			<div class="md:hidden">
+				<button @click="open = !open" class="text-white focus:outline-none">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+		<div x-show="open" x-transition @click.away="open = false" class="md:hidden mt-2 space-y-2">
+			<a href="#" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Home</a>
+			<a href="#" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">About</a>
+			<a href="#" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Services</a>
+			<a href="#" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Contact</a>
+			if loggedIn {
+				<a href="/logout" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Logout</a>
+			} else {
+				<a href="/login" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Login</a>
+				<a href="/signup" class="block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300">Signup</a>
+			}
+		</div>
+	</nav>
+}
 
-<body>
-    { children... }
-</body>
-
-</html>
+templ Footer() {
+	<footer class="bg-gray-800 text-gray-200 p-6" x-data="{ year: new Date().getFullYear() }">
+		<div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+			<div class="mb-4 md:mb-0">
+				<h5 class="font-bold text-lg">EleadGen</h5>
+				<p>&copy; <span x-text="year"></span> EleadGen. All rights reserved.</p>
+			</div>
+			<div class="flex space-x-6">
+				<a href="#" class="text-gray-200 hover:text-white transition duration-300">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zM9 12h6M9 16h6M9 8h6"
+						></path>
+					</svg>
+				</a>
+				<a href="#" class="text-gray-200 hover:text-white transition duration-300">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 2a10 10 0 100 20 10 10 0 000-20z"
+						></path>
+					</svg>
+				</a>
+				<a href="#" class="text-gray-200 hover:text-white transition duration-300">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M16.5 8.25c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75zm-4 0c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75zm-4 0c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75z"
+						></path>
+					</svg>
+				</a>
+			</div>
+		</div>
+	</footer>
 }
