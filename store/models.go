@@ -10,3 +10,10 @@ type User struct {
 	Email    string
 	Password string
 }
+
+type UserMessage struct {
+	ID      int64
+	Name    string
+	Email   string
+	Message string
+}

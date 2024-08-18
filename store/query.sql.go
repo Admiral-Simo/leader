@@ -9,6 +9,31 @@ import (
 	"context"
 )
 
+const createMessage = `-- name: CreateMessage :one
+INSERT INTO user_messages (name, email, message)
+VALUES ($1, $2, $3)
+RETURNING id, name, email, message
+`
+
+type CreateMessageParams struct {
+	Name    string
+	Email   string
+	Message string
+}
+
+// Create a new message
+func (q *Queries) CreateMessage(ctx context.Context, arg CreateMessageParams) (UserMessage, error) {
+	row := q.db.QueryRow(ctx, createMessage, arg.Name, arg.Email, arg.Message)
+	var i UserMessage
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.Message,
+	)
+	return i, err
+}
+
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (name, email, password)
 VALUES ($1, $2, $3)
@@ -34,6 +59,17 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
+const deleteMessage = `-- name: DeleteMessage :exec
+DELETE FROM user_messages
+WHERE id = $1
+`
+
+// Delete a message by ID
+func (q *Queries) DeleteMessage(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteMessage, id)
+	return err
+}
+
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
 WHERE id = $1
@@ -43,6 +79,58 @@ WHERE id = $1
 func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 	_, err := q.db.Exec(ctx, deleteUser, id)
 	return err
+}
+
+const getMessageByID = `-- name: GetMessageByID :one
+SELECT id, name, email, message
+FROM user_messages
+WHERE id = $1
+`
+
+// Get a message by ID
+func (q *Queries) GetMessageByID(ctx context.Context, id int64) (UserMessage, error) {
+	row := q.db.QueryRow(ctx, getMessageByID, id)
+	var i UserMessage
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.Message,
+	)
+	return i, err
+}
+
+const getMessagesByEmail = `-- name: GetMessagesByEmail :many
+SELECT id, name, email, message
+FROM user_messages
+WHERE email = $1
+ORDER BY id
+`
+
+// Get messages by user email
+func (q *Queries) GetMessagesByEmail(ctx context.Context, email string) ([]UserMessage, error) {
+	rows, err := q.db.Query(ctx, getMessagesByEmail, email)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []UserMessage
+	for rows.Next() {
+		var i UserMessage
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Email,
+			&i.Message,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
@@ -83,6 +171,38 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 	return i, err
 }
 
+const listMessages = `-- name: ListMessages :many
+SELECT id, name, email, message
+FROM user_messages
+ORDER BY id
+`
+
+// List all messages
+func (q *Queries) ListMessages(ctx context.Context) ([]UserMessage, error) {
+	rows, err := q.db.Query(ctx, listMessages)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []UserMessage
+	for rows.Next() {
+		var i UserMessage
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Email,
+			&i.Message,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listUsers = `-- name: ListUsers :many
 SELECT id, name, email, password
 FROM users
@@ -113,6 +233,38 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateMessage = `-- name: UpdateMessage :one
+UPDATE user_messages
+SET name = $2, email = $3, message = $4
+WHERE id = $1
+RETURNING id, name, email, message
+`
+
+type UpdateMessageParams struct {
+	ID      int64
+	Name    string
+	Email   string
+	Message string
+}
+
+// Update a message by ID
+func (q *Queries) UpdateMessage(ctx context.Context, arg UpdateMessageParams) (UserMessage, error) {
+	row := q.db.QueryRow(ctx, updateMessage,
+		arg.ID,
+		arg.Name,
+		arg.Email,
+		arg.Message,
+	)
+	var i UserMessage
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.Message,
+	)
+	return i, err
 }
 
 const updateUser = `-- name: UpdateUser :one
