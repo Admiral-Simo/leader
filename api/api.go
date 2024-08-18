@@ -27,7 +27,11 @@ type APIBuilder struct {
 }
 
 func NewAPIBuilder() *APIBuilder {
-	return &APIBuilder{}
+	return &APIBuilder{
+        port: 4000,
+		engine: engines.NewGoogleSearchEngine(),
+		dbURL:  "postgres://postgres:my_password@localhost:5432/sqlctest?sslmode=disable",
+	}
 }
 
 func (b *APIBuilder) WithPort(port int) *APIBuilder {
