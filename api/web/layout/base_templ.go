@@ -47,7 +47,15 @@ func Base(title string, loggedIn bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center hidden\"><div aria-label=\"Loading...\" role=\"status\" class=\"flex items-center space-x-2\"><svg class=\"h-20 w-20 animate-spin stroke-gray-500\" viewBox=\"0 0 256 256\"><line x1=\"128\" y1=\"32\" x2=\"128\" y2=\"64\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"60.1\" x2=\"173.3\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"224\" y1=\"128\" x2=\"192\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"195.9\" x2=\"173.3\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"128\" y1=\"224\" x2=\"128\" y2=\"192\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"195.9\" x2=\"82.7\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"32\" y1=\"128\" x2=\"64\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"60.1\" x2=\"82.7\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line></svg></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		templ_7745c5c3_Err = templ_7745c5c3_Var1.Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -55,7 +63,7 @@ func Base(title string, loggedIn bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script>\n        // htmx event listeners to show/hide the spinner\n        document.addEventListener('htmx:configRequest', function () {\n            document.getElementById('spinner-overlay').classList.remove('hidden');\n        });\n\n        document.addEventListener('htmx:afterSwap', function () {\n            document.getElementById('spinner-overlay').classList.add('hidden');\n        });\n    </script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -81,32 +89,32 @@ func Navbar(loggedIn bool) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-purple-500 to-indigo-600 p-4\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><a href=\"/\" class=\"text-white font-bold text-xl\">EleadGen</a><div class=\"hidden md:flex space-x-6\"><a href=\"/\" class=\"text-white hover:text-gray-300 transition duration-300\">Home</a> <a href=\"/about\" class=\"text-white hover:text-gray-300 transition duration-300\">About</a> <a href=\"/services\" class=\"text-white hover:text-gray-300 transition duration-300\">Services</a> <a href=\"/contact\" class=\"text-white hover:text-gray-300 transition duration-300\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-purple-500 to-indigo-600 p-4 shadow-lg\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><!-- Brand --><a hx-get=\"/\" hx-target=\"body\" class=\"text-white font-extrabold text-2xl tracking-wider cursor-pointer\">EleadGen</a><!-- Desktop Menu --><div class=\"hidden md:flex space-x-8 items-center\"><a hx-get=\"/about\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if loggedIn {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/logout\" class=\"text-white hover:text-gray-300 transition duration-300\">Logout</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/logout\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Logout</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/login\" class=\"text-white hover:text-gray-300 transition duration-300\">Login</a> <a href=\"/signup\" class=\"text-white hover:text-gray-300 transition duration-300\">Signup</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer border border-white px-4 py-2 border-2 rounded-md\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"bg-white text-indigo-600 font-semibold text-lg px-4 py-2 rounded-md shadow hover:bg-gray-100 transition duration-300 cursor-pointer\">Signup</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"md:hidden\"><button @click=\"open = !open\" class=\"text-white focus:outline-none\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16m-7 6h7\"></path></svg></button></div></div><div x-show=\"open\" x-transition @click.away=\"open = false\" class=\"md:hidden mt-2 space-y-2\"><a href=\"/\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Home</a> <a href=\"/about\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">About</a> <a href=\"/services\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Services</a> <a href=\"/contact\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Mobile Menu Button --><div class=\"md:hidden\"><button @click=\"open = !open\" class=\"text-white focus:outline-none\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-8 w-8\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16m-7 6h7\"></path></svg></button></div></div><!-- Mobile Menu --><div x-show=\"open\" x-transition @click.away=\"open = false\" class=\"md:hidden mt-4 bg-white rounded-lg shadow-lg\"><a hx-get=\"/about\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if loggedIn {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/logout\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Logout</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/login\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Login</a> <a href=\"/signup\" class=\"block px-4 py-2 text-white hover:bg-indigo-700 transition duration-300\">Signup</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-b-lg shadow-lg hover:bg-indigo-700 transition duration-300 cursor-pointer\">Signup</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
