@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"net/http"
 	"server/api/handler"
 	"server/api/web/pages/authtempl"
 	"server/api/web/pages/maintempl"
@@ -24,7 +23,15 @@ func Routes(h handler.Handler) {
 		authtempl.Login().Render(ctx, ctx.Writer)
 	})
 
-	h.App.GET("/hello", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"message": "ok"})
+	h.App.GET("/services", func(ctx *gin.Context) {
+		maintempl.Services().Render(ctx, ctx.Writer)
+	})
+
+	h.App.GET("/about", func(ctx *gin.Context) {
+		maintempl.About().Render(ctx, ctx.Writer)
+	})
+
+	h.App.GET("/contact", func(ctx *gin.Context) {
+		maintempl.Contact().Render(ctx, ctx.Writer)
 	})
 }

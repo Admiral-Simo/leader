@@ -1,0 +1,91 @@
+package maintempl
+
+import "server/api/web/layout"
+
+templ Services() {
+	@layout.Base("Services", false) {
+		<main class="max-w-4xl mx-auto mt-8 p-4 min-h-screen flex items-center justify-center">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				<div class="bg-white p-6 rounded-lg shadow-lg">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Keyword Search</h2>
+					<p class="text-gray-600">Search for emails based on specific keywords with high accuracy and speed.</p>
+				</div>
+				<div class="bg-white p-6 rounded-lg shadow-lg">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Email Filtering</h2>
+					<p class="text-gray-600">Filter your emails by various criteria to find exactly what you need.</p>
+				</div>
+				<div class="bg-white p-6 rounded-lg shadow-lg">
+					<h2 class="text-xl font-bold text-gray-800 mb-4">Advanced Analytics</h2>
+					<p class="text-gray-600">Get insights from your emails with our powerful analytics tools.</p>
+				</div>
+			</div>
+		</main>
+	}
+}
+
+templ About() {
+	@layout.Base("About", false) {
+		<main class="max-w-4xl mx-auto mt-8 p-4 min-h-screen flex items-center justify-center">
+			<div class="bg-white p-6 rounded-lg shadow-lg">
+				<h2 class="text-xl font-bold text-gray-800 mb-4">Our Mission</h2>
+				<p class="text-gray-600 mb-4">
+					At Email Keyword Finder, our mission is to make email searching and filtering as
+					simple and efficient as possible. We strive to help individuals and businesses quickly find the information
+					they need from their emails.
+				</p>
+				<h2 class="text-xl font-bold text-gray-800 mb-4">Our Team</h2>
+				<p class="text-gray-600">
+					We are a team of passionate professionals dedicated to creating tools that make your
+					life easier. Our diverse backgrounds in technology, design, and customer service allow us to deliver
+					top-notch products and services.
+				</p>
+			</div>
+		</main>
+	}
+}
+
+templ Contact() {
+	@layout.Base("Contact", false) {
+		<main class="max-w-4xl mx-auto mt-8 p-4 min-h-screen">
+			<div class="bg-white p-6 rounded-lg shadow-lg mt-20">
+				<h2 class="text-xl font-bold text-gray-800 mb-4">Get in Touch</h2>
+				<form>
+					<div class="mb-4">
+						<label for="name" class="block text-gray-700">Name</label>
+						<input
+							type="text"
+							id="name"
+							class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+							placeholder="Your Name"
+						/>
+					</div>
+					<div class="mb-4">
+						<label for="email" class="block text-gray-700">Email</label>
+						<input
+							type="email"
+							id="email"
+							class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+							placeholder="Your Email"
+						/>
+					</div>
+					<div class="mb-4">
+						<label for="message" class="block text-gray-700">Message</label>
+						<textarea
+							id="message"
+							class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+							rows="4"
+							placeholder="Your Message"
+						></textarea>
+					</div>
+					<button
+						type="submit"
+						class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300"
+					>
+						Send
+						Message
+					</button>
+				</form>
+			</div>
+		</main>
+	}
+}
