@@ -1,9 +1,12 @@
 package pages
 
 import (
+	"fmt"
+	"net/http"
 	"server/api/handler"
 	"server/api/web/pages/authtempl"
 	"server/api/web/pages/maintempl"
+	"server/store"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,5 +36,26 @@ func Routes(h handler.Handler) {
 
 	h.App.GET("/contact", func(ctx *gin.Context) {
 		maintempl.Contact().Render(ctx, ctx.Writer)
+	})
+
+	PostContactData(h)
+}
+
+func PostContactData(h handler.Handler) {
+	h.App.POST("/contact", func(ctx *gin.Context) {
+		email := ctx.PostForm("email")
+		name := ctx.PostForm("name")
+		message := ctx.PostForm("message")
+		_, err := h.Store.CreateMessage(ctx, store.CreateMessageParams{
+			Name:    name,
+			Email:   email,
+			Message: message,
+		})
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		// redirect to "/"
+		ctx.Redirect(http.StatusSeeOther, "/")
 	})
 }
