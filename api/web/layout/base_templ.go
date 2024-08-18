@@ -33,7 +33,7 @@ func Base(title string, loggedIn bool) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 10, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 11, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -81,7 +81,7 @@ func Navbar(loggedIn bool) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-purple-500 to-indigo-600 p-4\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><a href=\"/\" class=\"text-white font-bold text-xl\">EleadGen</a><div class=\"hidden md:flex space-x-6\"><a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">Home</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">About</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">Services</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-purple-500 to-indigo-600 p-4\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><a href=\"/\" class=\"text-white font-bold text-xl\">EleadGen</a><div class=\"hidden md:flex space-x-6\"><a href=\"/\" class=\"text-white hover:text-gray-300 transition duration-300\">Home</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">About</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">Services</a> <a href=\"#\" class=\"text-white hover:text-gray-300 transition duration-300\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

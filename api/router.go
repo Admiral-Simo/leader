@@ -3,6 +3,7 @@ package api
 import (
 	"server/api/handler"
 	"server/api/handler/auth"
+	"server/api/handler/pages"
 )
 
 // StartServer registers the server (implementation to be added)
@@ -13,4 +14,5 @@ func (a *API) registerRoutes() {
         App: a.app,
 	}
 	auth.Routes(h)
+	pages.Routes(h)
 }
