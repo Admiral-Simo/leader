@@ -6,7 +6,7 @@ import (
 
 func main() {
 	apiInstance := api.NewAPIBuilder().
-		WithPort(4000).
+		WithPort(80).
 		Build()
 
 	apiInstance.StartServer()
