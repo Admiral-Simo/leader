@@ -19,11 +19,11 @@ func Routes(h handler.Handler) {
 
 	// authentication
 	h.App.GET("/signup", func(ctx *gin.Context) {
-		authtempl.SignUp().Render(ctx, ctx.Writer)
+		authtempl.SignUp(nil).Render(ctx, ctx.Writer)
 	})
 
 	h.App.GET("/login", func(ctx *gin.Context) {
-		authtempl.Login().Render(ctx, ctx.Writer)
+		authtempl.Login(nil).Render(ctx, ctx.Writer)
 	})
 
 	h.App.GET("/services", func(ctx *gin.Context) {
