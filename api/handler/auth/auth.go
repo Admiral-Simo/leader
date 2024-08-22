@@ -79,6 +79,10 @@ func Routes(h handler.Handler) {
 		// TODO: return a cookie that has a json web token that has the userID
 		ctx.Redirect(http.StatusSeeOther, "/")
 	})
+	h.App.GET("/logout", func(ctx *gin.Context) {
+		ctx.SetCookie("auth_cookie", "", -1, "/", "", false, true)
+        ctx.Redirect(http.StatusSeeOther, "/about")
+	})
 }
 
 func checkForCredentials(name string, email string, pass string) map[string]string {
