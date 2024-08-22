@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "server/api/web/layout"
+import "server/store"
 
 func Home() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -40,7 +41,20 @@ func Home() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"main\" class=\"bg-gray-100 flex items-center justify-center min-h-screen py-7\"><div class=\"bg-white p-8 rounded-lg shadow-lg max-w-lg w-full\"><h1 class=\"text-3xl font-bold text-center text-gray-800\">Email Keyword Finder</h1><p class=\"text-gray-600 text-center mb-6\">Easily search for emails based on specific keywords.</p><form x-data=\"{ keyword: &#39;&#39; }\" hx-post=\"/emails\" hx-target=\"#main\" hx-swap=\"innerHTML\"><div class=\"mb-4\"><label for=\"keyword\" class=\"block text-gray-700 font-medium\">Keyword</label> <input type=\"text\" id=\"keyword\" name=\"keyword\" x-model=\"keyword\" class=\"mt-2 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none\" placeholder=\"Enter your keyword...\"></div><div class=\"flex items-center justify-between\"><button type=\"submit\" class=\"bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition duration-300\">Search</button> <button type=\"reset\" @click=\"keyword = &#39;&#39;\" class=\"bg-gray-300 text-gray-800 py-2 px-6 rounded-lg hover:bg-gray-400 transition duration-300\">Clear</button></div></form></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"main\" class=\"min-h-screen flex items-center justify-center\"><div class=\"bg-white p-10 rounded-xl shadow-lg max-w-lg w-full\"><!-- Welcome Message --><h2 class=\"text-2xl font-semibold text-gray-700 text-center mb-4\">Welcome, ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(ctx.Value("user").(store.User).Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/maintempl/home.templ`, Line: 12, Col: 51}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("!</h2><!-- Title --><h1 class=\"text-4xl font-bold text-center text-indigo-700\">Email Keyword Finder</h1><p class=\"text-gray-600 text-center mt-2 mb-8\">Easily search for emails based on specific keywords.</p><!-- Form --><form x-data=\"{ keyword: &#39;&#39; }\" hx-post=\"/emails\" hx-target=\"#main\" hx-swap=\"innerHTML\"><div class=\"mb-6\"><label for=\"keyword\" class=\"block text-gray-700 font-medium mb-2\">Keyword</label> <input type=\"text\" id=\"keyword\" name=\"keyword\" x-model=\"keyword\" class=\"w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none\" placeholder=\"Enter your keyword...\"></div><div class=\"flex items-center justify-between\"><button type=\"submit\" class=\"bg-indigo-600 text-white py-2 px-8 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300\">Search</button> <button type=\"reset\" @click=\"keyword = &#39;&#39;\" class=\"bg-gray-300 text-gray-800 py-2 px-8 rounded-lg font-semibold hover:bg-gray-400 transition duration-300\">Clear</button></div></form></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
