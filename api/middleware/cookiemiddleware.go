@@ -9,15 +9,18 @@ import (
 )
 
 func JWTAuthMiddleware(h handler.Handler) gin.HandlerFunc {
+	var routes = []string{"/", "/emails"}
 	return func(c *gin.Context) {
 		// Read the "auth_cookie"
 		tokenString, err := c.Cookie("auth_cookie")
 		if err != nil {
 			// Handle the case where the authentication token is not present
-			if c.Request.URL.Path == "/" {
-				c.Redirect(http.StatusSeeOther, "/about")
-				c.Abort() // Abort further processing
-				return
+			for _, route := range routes {
+				if c.Request.URL.Path == route {
+					c.Redirect(http.StatusSeeOther, "/about")
+					c.Abort() // Abort further processing
+					return
+				}
 			}
 			c.Next()
 			return
@@ -27,10 +30,12 @@ func JWTAuthMiddleware(h handler.Handler) gin.HandlerFunc {
 		userID, err := cookies.DecodeJWT(tokenString)
 		if err != nil {
 			// Handle the case where the authentication token is invalid
-			if c.Request.URL.Path == "/" {
-				c.Redirect(http.StatusSeeOther, "/about")
-				c.Abort() // Abort further processing
-				return
+			for _, route := range routes {
+				if c.Request.URL.Path == route {
+					c.Redirect(http.StatusSeeOther, "/about")
+					c.Abort() // Abort further processing
+					return
+				}
 			}
 			c.Next()
 			return
