@@ -9,7 +9,7 @@ import (
 )
 
 func JWTAuthMiddleware(h handler.Handler) gin.HandlerFunc {
-	var routes = []string{"/", "/emails"}
+	var routes = []string{"/", "/emails", "/history"}
 	return func(c *gin.Context) {
 		// Read the "auth_cookie"
 		tokenString, err := c.Cookie("auth_cookie")

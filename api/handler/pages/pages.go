@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"server/api/handler"
 	"server/api/web/pages/authtempl"
+	"server/api/web/pages/historytempl"
 	"server/api/web/pages/maintempl"
 	"server/store"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func Routes(h handler.Handler) {
@@ -38,7 +40,62 @@ func Routes(h handler.Handler) {
 		maintempl.Contact().Render(ctx, ctx.Writer)
 	})
 
+	h.App.GET("/history", func(ctx *gin.Context) {
+		history := getHistoryData(h, ctx)
+		historytempl.HistoryPage(history).Render(ctx, ctx.Writer)
+	})
+
 	PostContactData(h)
+}
+
+func getHistoryData(h handler.Handler, ctx *gin.Context) handler.HistoryResult {
+	var result handler.HistoryResult
+
+	// Get the user ID from the context
+	userID := ctx.Value("user").(store.User).ID
+
+	// Fetch search history for the user
+	history, err := h.Store.GetSearchHistoryByUserID(ctx, pgtype.Int8{Int64: userID, Valid: true})
+	if err != nil {
+		// Handle the error appropriately (e.g., log it, return an error response, etc.)
+		return result
+	}
+
+	// Iterate over the search history items
+	for _, item := range history {
+		var websites []handler.Website
+
+		// Fetch websites for each search history item
+		websitesData, err := h.Store.GetWebsitesBySearchHistoryID(ctx, pgtype.Int8{Int64: item.ID, Valid: true})
+		if err != nil {
+			// Handle the error appropriately
+			continue
+		}
+
+		// Iterate over the websites and fetch emails for each website
+		for _, websiteData := range websitesData {
+			emails, err := h.Store.GetEmailsByWebsiteID(ctx, pgtype.Int8{Int64: websiteData.ID, Valid: true})
+			if err != nil {
+				// Handle the error appropriately
+				continue
+			}
+
+			// Append the website with its associated emails to the websites slice
+			websites = append(websites, handler.Website{
+				Url:    websiteData.Url,
+				Emails: emails, // Assuming emails is of type []store.Email
+			})
+		}
+
+		// Append the history item to the result
+		result.HistoryItems = append(result.HistoryItems, handler.HistoryItem{
+			Keyword:    item.Keyword,
+			SearchTime: item.SearchTime.Time,
+			Websites:   websites,
+		})
+	}
+
+	return result
 }
 
 func PostContactData(h handler.Handler) {
