@@ -93,38 +93,25 @@ func Navbar() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-indigo-600 to-purple-700 p-4 shadow-lg\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><!-- Brand --><a hx-get=\"/\" hx-target=\"body\" class=\"text-white font-extrabold text-2xl tracking-wider cursor-pointer\">EleadGen</a><!-- Desktop Menu --><div class=\"hidden md:flex space-x-8 items-center\"><a hx-get=\"/about\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-indigo-600 to-purple-700 p-4 shadow-lg\" x-data=\"{ open: false, showLogout: false }\"><div class=\"container mx-auto flex justify-between items-center\"><!-- Brand --><a hx-get=\"/\" hx-target=\"body\" class=\"text-white font-extrabold text-2xl tracking-wider cursor-pointer\">EleadGen</a><!-- Desktop Menu --><div class=\"hidden md:flex space-x-8 items-center\"><a hx-get=\"/about\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if user, ok := ctx.Value("user").(store.User); ok {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-white\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- Profile Button --> <div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 cursor-pointer\"><!-- Avatar --><div class=\"flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-3xl font-bold rounded-full shadow-lg w-14 h-14\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 149, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 155, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-3 text-xl rounded-full bg-purple-600 text-white font-semibold\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 150, Col: 104}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a hx-get=\"/logout\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Logout</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-10 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -134,38 +121,25 @@ func Navbar() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Mobile Menu Button --><div class=\"md:hidden\"><button @click=\"open = !open\" class=\"text-white focus:outline-none\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-8 w-8\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16m-7 6h7\"></path></svg></button></div></div><!-- Mobile Menu --><div x-show=\"open\" x-transition @click.away=\"open = false\" class=\"md:hidden mt-4 bg-white rounded-lg shadow-lg\"><a hx-get=\"/about\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Mobile Menu Button --><div class=\"md:hidden\"><button @click=\"open = !open\" aria-expanded=\"open\" aria-controls=\"mobile-menu\" class=\"text-white focus:outline-none\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-8 w-8\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16m-7 6h7\"></path></svg></button></div></div><!-- Mobile Menu --><div x-show=\"open\" x-transition @click.away=\"open = false\" id=\"mobile-menu\" class=\"md:hidden mt-4 bg-white rounded-lg shadow-lg\"><a hx-get=\"/about\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if user, ok := ctx.Value("user").(store.User); ok {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-indigo-600 px-4 py-3\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- Mobile Profile Button --> <div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 px-4 py-3 cursor-pointer\"><!-- Avatar --><div class=\"flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-3xl font-bold rounded-full shadow-lg w-14 h-14\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 202, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 238, Col: 29}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-3 text-xl rounded-full bg-purple-600 text-white font-semibold\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 203, Col: 103}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><!-- Mobile Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-10 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -196,21 +170,21 @@ func Footer() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var8 == nil {
-			templ_7745c5c3_Var8 = templ.NopComponent
+		templ_7745c5c3_Var6 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var6 == nil {
+			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-6 mt-8\"><div class=\"container mx-auto text-center\"><p class=\"text-sm\">&copy; ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
+		var templ_7745c5c3_Var7 string
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 228, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 277, Col: 62}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
