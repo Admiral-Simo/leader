@@ -6,7 +6,7 @@ import (
 	"server/api/handler/pages"
 )
 
-// StartServer registers the server (implementation to be added)
+// StartServer registers the server
 func (a *API) registerRoutes() {
 	h := handler.Handler{
 		Store:        a.store,
