@@ -1,0 +1,26 @@
+package maintempl
+
+templ EmailList(data map[string]map[string]struct{}) {
+	<div class="space-y-4">
+		for website, emails := range data {
+			<!-- Render website section -->
+			<div class="font-bold text-xl text-purple-700 mb-2">
+				{ website }
+			</div>
+			<!-- Render each email under the website -->
+			for email := range emails {
+				<div>
+					@EmailComponent(email)
+				</div>
+			}
+		}
+	</div>
+}
+
+templ EmailComponent(email string) {
+	<div class="p-4 bg-white shadow rounded-md mb-4">
+		<div class="font-bold text-lg text-indigo-700">
+			{ email }
+		</div>
+	</div>
+}

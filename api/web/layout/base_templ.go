@@ -37,7 +37,7 @@ func Base(title string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 14, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 15, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -51,7 +51,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative min-h-screen\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-gray-100 bg-opacity-75 flex items-center justify-center hidden\"><div aria-label=\"Loading...\" role=\"status\" class=\"flex items-center space-x-2\"><svg class=\"h-16 w-16 animate-spin text-indigo-600\" viewBox=\"0 0 256 256\"><line x1=\"128\" y1=\"32\" x2=\"128\" y2=\"64\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"60.1\" x2=\"173.3\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"224\" y1=\"128\" x2=\"192\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"195.9\" x2=\"173.3\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"128\" y1=\"224\" x2=\"128\" y2=\"192\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"195.9\" x2=\"82.7\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"32\" y1=\"128\" x2=\"64\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"60.1\" x2=\"82.7\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line></svg></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative min-h-screen\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden\"><div class=\"flex space-x-2 justify-center items-center h-screen dark:invert\"><span class=\"sr-only\">Loading...</span><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -105,7 +105,7 @@ func Navbar() templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 155, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 78, Col: 42}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -133,7 +133,7 @@ func Navbar() templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 238, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 126, Col: 38}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -175,14 +175,14 @@ func Footer() templ.Component {
 			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-6 mt-8\"><div class=\"container mx-auto text-center\"><p class=\"text-sm\">&copy; ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-6\"><div class=\"container mx-auto text-center\"><p class=\"text-sm\">&copy; ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 277, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 151, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {

@@ -83,7 +83,7 @@ func (a *API) StartServer() {
 func (a *API) registerMiddlewares() {
 	h := handler.Handler{
 		Store:        a.store,
-		SearchEngine: &a.engine,
+		SearchEngine: a.engine,
 		App:          a.app,
 	}
 	a.app.Use(middleware.JWTAuthMiddleware(h))
