@@ -7,7 +7,41 @@ package store
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const createEmail = `-- name: CreateEmail :one
+INSERT INTO emails (website_id, email, subject, date)
+VALUES ($1, $2, $3, $4)
+RETURNING id, website_id, email, subject, date
+`
+
+type CreateEmailParams struct {
+	WebsiteID pgtype.Int8
+	Email     string
+	Subject   pgtype.Text
+	Date      pgtype.Timestamptz
+}
+
+// Create a new email entry for a website
+func (q *Queries) CreateEmail(ctx context.Context, arg CreateEmailParams) (Email, error) {
+	row := q.db.QueryRow(ctx, createEmail,
+		arg.WebsiteID,
+		arg.Email,
+		arg.Subject,
+		arg.Date,
+	)
+	var i Email
+	err := row.Scan(
+		&i.ID,
+		&i.WebsiteID,
+		&i.Email,
+		&i.Subject,
+		&i.Date,
+	)
+	return i, err
+}
 
 const createMessage = `-- name: CreateMessage :one
 INSERT INTO user_messages (name, email, message)
@@ -30,6 +64,30 @@ func (q *Queries) CreateMessage(ctx context.Context, arg CreateMessageParams) (U
 		&i.Name,
 		&i.Email,
 		&i.Message,
+	)
+	return i, err
+}
+
+const createSearchHistory = `-- name: CreateSearchHistory :one
+INSERT INTO search_history (user_id, keyword)
+VALUES ($1, $2)
+RETURNING id, user_id, keyword, search_time
+`
+
+type CreateSearchHistoryParams struct {
+	UserID  pgtype.Int8
+	Keyword string
+}
+
+// Create a new search history entry
+func (q *Queries) CreateSearchHistory(ctx context.Context, arg CreateSearchHistoryParams) (SearchHistory, error) {
+	row := q.db.QueryRow(ctx, createSearchHistory, arg.UserID, arg.Keyword)
+	var i SearchHistory
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Keyword,
+		&i.SearchTime,
 	)
 	return i, err
 }
@@ -59,6 +117,36 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
+const createWebsite = `-- name: CreateWebsite :one
+INSERT INTO websites (search_history_id, url)
+VALUES ($1, $2)
+RETURNING id, search_history_id, url
+`
+
+type CreateWebsiteParams struct {
+	SearchHistoryID pgtype.Int8
+	Url             string
+}
+
+// Create a new website entry for a search
+func (q *Queries) CreateWebsite(ctx context.Context, arg CreateWebsiteParams) (Website, error) {
+	row := q.db.QueryRow(ctx, createWebsite, arg.SearchHistoryID, arg.Url)
+	var i Website
+	err := row.Scan(&i.ID, &i.SearchHistoryID, &i.Url)
+	return i, err
+}
+
+const deleteEmailsByWebsiteID = `-- name: DeleteEmailsByWebsiteID :exec
+DELETE FROM emails
+WHERE website_id = $1
+`
+
+// Delete emails by website ID
+func (q *Queries) DeleteEmailsByWebsiteID(ctx context.Context, websiteID pgtype.Int8) error {
+	_, err := q.db.Exec(ctx, deleteEmailsByWebsiteID, websiteID)
+	return err
+}
+
 const deleteMessage = `-- name: DeleteMessage :exec
 DELETE FROM user_messages
 WHERE id = $1
@@ -67,6 +155,17 @@ WHERE id = $1
 // Delete a message by ID
 func (q *Queries) DeleteMessage(ctx context.Context, id int64) error {
 	_, err := q.db.Exec(ctx, deleteMessage, id)
+	return err
+}
+
+const deleteSearchHistory = `-- name: DeleteSearchHistory :exec
+DELETE FROM search_history
+WHERE id = $1
+`
+
+// Delete search history by ID
+func (q *Queries) DeleteSearchHistory(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteSearchHistory, id)
 	return err
 }
 
@@ -79,6 +178,50 @@ WHERE id = $1
 func (q *Queries) DeleteUser(ctx context.Context, id int64) error {
 	_, err := q.db.Exec(ctx, deleteUser, id)
 	return err
+}
+
+const deleteWebsitesBySearchHistoryID = `-- name: DeleteWebsitesBySearchHistoryID :exec
+DELETE FROM websites
+WHERE search_history_id = $1
+`
+
+// Delete websites by search history ID
+func (q *Queries) DeleteWebsitesBySearchHistoryID(ctx context.Context, searchHistoryID pgtype.Int8) error {
+	_, err := q.db.Exec(ctx, deleteWebsitesBySearchHistoryID, searchHistoryID)
+	return err
+}
+
+const getEmailsByWebsiteID = `-- name: GetEmailsByWebsiteID :many
+SELECT id, website_id, email, subject, date
+FROM emails
+WHERE website_id = $1
+`
+
+// Get emails by website ID
+func (q *Queries) GetEmailsByWebsiteID(ctx context.Context, websiteID pgtype.Int8) ([]Email, error) {
+	rows, err := q.db.Query(ctx, getEmailsByWebsiteID, websiteID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Email
+	for rows.Next() {
+		var i Email
+		if err := rows.Scan(
+			&i.ID,
+			&i.WebsiteID,
+			&i.Email,
+			&i.Subject,
+			&i.Date,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getMessageByID = `-- name: GetMessageByID :one
@@ -133,6 +276,77 @@ func (q *Queries) GetMessagesByEmail(ctx context.Context, email string) ([]UserM
 	return items, nil
 }
 
+const getSearchHistoryByKeyword = `-- name: GetSearchHistoryByKeyword :many
+SELECT id, user_id, keyword, search_time
+FROM search_history
+WHERE user_id = $1 AND keyword = $2
+ORDER BY search_time DESC
+`
+
+type GetSearchHistoryByKeywordParams struct {
+	UserID  pgtype.Int8
+	Keyword string
+}
+
+// Get search history by keyword
+func (q *Queries) GetSearchHistoryByKeyword(ctx context.Context, arg GetSearchHistoryByKeywordParams) ([]SearchHistory, error) {
+	rows, err := q.db.Query(ctx, getSearchHistoryByKeyword, arg.UserID, arg.Keyword)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []SearchHistory
+	for rows.Next() {
+		var i SearchHistory
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Keyword,
+			&i.SearchTime,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getSearchHistoryByUserID = `-- name: GetSearchHistoryByUserID :many
+SELECT id, user_id, keyword, search_time
+FROM search_history
+WHERE user_id = $1
+ORDER BY search_time DESC
+`
+
+// Get search history by user ID
+func (q *Queries) GetSearchHistoryByUserID(ctx context.Context, userID pgtype.Int8) ([]SearchHistory, error) {
+	rows, err := q.db.Query(ctx, getSearchHistoryByUserID, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []SearchHistory
+	for rows.Next() {
+		var i SearchHistory
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Keyword,
+			&i.SearchTime,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUserByEmail = `-- name: GetUserByEmail :one
 SELECT id, name, email, password
 FROM users
@@ -171,6 +385,33 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 	return i, err
 }
 
+const getWebsitesBySearchHistoryID = `-- name: GetWebsitesBySearchHistoryID :many
+SELECT id, search_history_id, url
+FROM websites
+WHERE search_history_id = $1
+`
+
+// Get websites by search history ID
+func (q *Queries) GetWebsitesBySearchHistoryID(ctx context.Context, searchHistoryID pgtype.Int8) ([]Website, error) {
+	rows, err := q.db.Query(ctx, getWebsitesBySearchHistoryID, searchHistoryID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Website
+	for rows.Next() {
+		var i Website
+		if err := rows.Scan(&i.ID, &i.SearchHistoryID, &i.Url); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listMessages = `-- name: ListMessages :many
 SELECT id, name, email, message
 FROM user_messages
@@ -192,6 +433,38 @@ func (q *Queries) ListMessages(ctx context.Context) ([]UserMessage, error) {
 			&i.Name,
 			&i.Email,
 			&i.Message,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listSearchHistory = `-- name: ListSearchHistory :many
+SELECT id, user_id, keyword, search_time
+FROM search_history
+ORDER BY search_time DESC
+`
+
+// List all search history entries
+func (q *Queries) ListSearchHistory(ctx context.Context) ([]SearchHistory, error) {
+	rows, err := q.db.Query(ctx, listSearchHistory)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []SearchHistory
+	for rows.Next() {
+		var i SearchHistory
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Keyword,
+			&i.SearchTime,
 		); err != nil {
 			return nil, err
 		}

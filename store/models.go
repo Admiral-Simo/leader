@@ -4,6 +4,25 @@
 
 package store
 
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
+
+type Email struct {
+	ID        int64
+	WebsiteID pgtype.Int8
+	Email     string
+	Subject   pgtype.Text
+	Date      pgtype.Timestamptz
+}
+
+type SearchHistory struct {
+	ID         int64
+	UserID     pgtype.Int8
+	Keyword    string
+	SearchTime pgtype.Timestamptz
+}
+
 type User struct {
 	ID       int64
 	Name     string
@@ -16,4 +35,10 @@ type UserMessage struct {
 	Name    string
 	Email   string
 	Message string
+}
+
+type Website struct {
+	ID              int64
+	SearchHistoryID pgtype.Int8
+	Url             string
 }

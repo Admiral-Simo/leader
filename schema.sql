@@ -5,13 +5,6 @@ CREATE TABLE users (
   password text      NOT NULL
 );
 
-CREATE TABLE user_messages (
-  id      BIGSERIAL PRIMARY KEY,
-  name    TEXT NOT NULL,
-  email   TEXT NOT NULL,
-  message TEXT NOT NULL
-);
-
 CREATE TABLE search_history (
   id        BIGSERIAL PRIMARY KEY,
   user_id   BIGINT REFERENCES users(id) ON DELETE CASCADE,
@@ -34,4 +27,11 @@ CREATE TABLE emails (
   subject      TEXT,
   date         TIMESTAMPTZ,
   UNIQUE(website_id, email)
+);
+
+CREATE TABLE user_messages (
+  id      BIGSERIAL PRIMARY KEY,
+  name    TEXT NOT NULL,
+  email   TEXT NOT NULL,
+  message TEXT NOT NULL
 );
