@@ -8,7 +8,11 @@ package layout
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Base(title string, loggedIn bool) templ.Component {
+import "server/store"
+import "time"
+import "strconv"
+
+func Base(title string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -33,21 +37,21 @@ func Base(title string, loggedIn bool) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 11, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 14, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><script src=\"https://cdn.tailwindcss.com\"></script><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js\"></script><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script></head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><!-- Tailwind CSS CDN --><script src=\"https://cdn.tailwindcss.com\"></script><!-- AlpineJS CDN --><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js\"></script><!-- HTMX CDN --><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script></head><body class=\"bg-gray-100 text-gray-900\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Navbar(loggedIn).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Navbar().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center hidden\"><div aria-label=\"Loading...\" role=\"status\" class=\"flex items-center space-x-2\"><svg class=\"h-20 w-20 animate-spin stroke-gray-500\" viewBox=\"0 0 256 256\"><line x1=\"128\" y1=\"32\" x2=\"128\" y2=\"64\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"60.1\" x2=\"173.3\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"224\" y1=\"128\" x2=\"192\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"195.9\" x2=\"173.3\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"128\" y1=\"224\" x2=\"128\" y2=\"192\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"195.9\" x2=\"82.7\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"32\" y1=\"128\" x2=\"64\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"60.1\" x2=\"82.7\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line></svg></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative min-h-screen\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-gray-100 bg-opacity-75 flex items-center justify-center hidden\"><div aria-label=\"Loading...\" role=\"status\" class=\"flex items-center space-x-2\"><svg class=\"h-16 w-16 animate-spin text-indigo-600\" viewBox=\"0 0 256 256\"><line x1=\"128\" y1=\"32\" x2=\"128\" y2=\"64\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"60.1\" x2=\"173.3\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"224\" y1=\"128\" x2=\"192\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"195.9\" y1=\"195.9\" x2=\"173.3\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"128\" y1=\"224\" x2=\"128\" y2=\"192\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"195.9\" x2=\"82.7\" y2=\"173.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"32\" y1=\"128\" x2=\"64\" y2=\"128\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line> <line x1=\"60.1\" y1=\"60.1\" x2=\"82.7\" y2=\"82.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"24\"></line></svg></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -63,7 +67,7 @@ func Base(title string, loggedIn bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script>\n        // htmx event listeners to show/hide the spinner\n        document.addEventListener('htmx:configRequest', function () {\n            document.getElementById('spinner-overlay').classList.remove('hidden');\n        });\n\n        document.addEventListener('htmx:afterSwap', function () {\n            document.getElementById('spinner-overlay').classList.add('hidden');\n        });\n    </script></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script>\n        // HTMX event listeners to show/hide the spinner\n        document.addEventListener('htmx:configRequest', function () {\n            document.getElementById('spinner-overlay').classList.remove('hidden');\n        });\n\n        document.addEventListener('htmx:afterSwap', function () {\n            document.getElementById('spinner-overlay').classList.add('hidden');\n        });\n    </script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -71,7 +75,7 @@ func Base(title string, loggedIn bool) templ.Component {
 	})
 }
 
-func Navbar(loggedIn bool) templ.Component {
+func Navbar() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -89,17 +93,43 @@ func Navbar(loggedIn bool) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-purple-500 to-indigo-600 p-4 shadow-lg\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><!-- Brand --><a hx-get=\"/\" hx-target=\"body\" class=\"text-white font-extrabold text-2xl tracking-wider cursor-pointer\">EleadGen</a><!-- Desktop Menu --><div class=\"hidden md:flex space-x-8 items-center\"><a hx-get=\"/about\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Contact</a> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"bg-gradient-to-r from-indigo-600 to-purple-700 p-4 shadow-lg\" x-data=\"{ open: false }\"><div class=\"container mx-auto flex justify-between items-center\"><!-- Brand --><a hx-get=\"/\" hx-target=\"body\" class=\"text-white font-extrabold text-2xl tracking-wider cursor-pointer\">EleadGen</a><!-- Desktop Menu --><div class=\"hidden md:flex space-x-8 items-center\"><a hx-get=\"/about\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">About</a> <a hx-get=\"/services\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Services</a> <a hx-get=\"/contact\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Contact</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if loggedIn {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/logout\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Logout</a>")
+		if user, ok := ctx.Value("user").(store.User); ok {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-white\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 149, Col: 40}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-3 text-xl rounded-full bg-purple-600 text-white font-semibold\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 150, Col: 104}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a hx-get=\"/logout\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer\">Logout</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer border border-white px-4 py-2 border-2 rounded-md\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"bg-white text-indigo-600 font-semibold text-lg px-4 py-2 rounded-md shadow hover:bg-gray-100 transition duration-300 cursor-pointer\">Signup</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"text-white text-lg hover:text-gray-200 transition duration-300 cursor-pointer border border-white px-4 py-2 rounded-md\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"bg-white text-indigo-600 font-semibold text-lg px-4 py-2 rounded-md shadow hover:bg-gray-100 transition duration-300 cursor-pointer\">Signup</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -108,13 +138,39 @@ func Navbar(loggedIn bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if loggedIn {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a>")
+		if user, ok := ctx.Value("user").(store.User); ok {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"text-indigo-600 px-4 py-3\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(user.Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 202, Col: 54}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"p-3 text-xl rounded-full bg-purple-600 text-white font-semibold\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[0]))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 203, Col: 103}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-b-lg shadow-lg hover:bg-indigo-700 transition duration-300 cursor-pointer\">Signup</a>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-get=\"/login\" hx-target=\"body\" class=\"block px-4 py-3 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Login</a> <a hx-get=\"/signup\" hx-target=\"body\" class=\"block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white font-semibold text-lg rounded-md shadow hover:bg-indigo-700 transition duration-300 cursor-pointer\">Signup</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -140,12 +196,25 @@ func Footer() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var4 == nil {
-			templ_7745c5c3_Var4 = templ.NopComponent
+		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var8 == nil {
+			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gray-800 text-gray-200 p-6\" x-data=\"{ year: new Date().getFullYear() }\"><div class=\"container mx-auto flex flex-col md:flex-row justify-between items-center\"><div class=\"mb-4 md:mb-0\"><h5 class=\"font-bold text-lg\">EleadGen</h5><p>&copy; <span x-text=\"year\"></span> EleadGen. All rights reserved.</p></div><div class=\"flex space-x-6\"><a href=\"#\" class=\"text-gray-200 hover:text-white transition duration-300\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zM9 12h6M9 16h6M9 8h6\"></path></svg></a> <a href=\"#\" class=\"text-gray-200 hover:text-white transition duration-300\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 2a10 10 0 100 20 10 10 0 000-20z\"></path></svg></a> <a href=\"#\" class=\"text-gray-200 hover:text-white transition duration-300\"><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16.5 8.25c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75zm-4 0c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75zm-4 0c-.966 0-1.75.784-1.75 1.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75-.784-1.75-1.75-1.75z\"></path></svg></a></div></div></footer>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-6 mt-8\"><div class=\"container mx-auto text-center\"><p class=\"text-sm\">&copy; ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 228, Col: 62}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" EleadGen. All rights reserved.</p><p class=\"text-xs mt-2\">Built with ❤️ using Tailwind CSS & AlpineJS</p></div></footer>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
