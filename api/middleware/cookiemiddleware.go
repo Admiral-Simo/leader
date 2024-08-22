@@ -49,6 +49,13 @@ func JWTAuthMiddleware(h handler.Handler) gin.HandlerFunc {
 		// Set the user in the context
 		c.Set("user", user)
 
+		// Handle the case where the authentication token is invalid
+		if c.Request.URL.Path == "/signup" || c.Request.URL.Path == "/login" {
+			c.Redirect(http.StatusSeeOther, "/")
+			c.Abort() // Abort further processing
+			return
+		}
+
 		// Proceed to the next handler
 		c.Next()
 	}
