@@ -14,7 +14,7 @@ import (
 func Routes(h handler.Handler) {
 	// home
 	h.App.GET("/", func(ctx *gin.Context) {
-		maintempl.Home().Render(ctx, ctx.Writer)
+		maintempl.Home(nil).Render(ctx, ctx.Writer)
 	})
 
 	// authentication

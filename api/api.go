@@ -32,7 +32,7 @@ func NewAPIBuilder() *APIBuilder {
 	return &APIBuilder{
 		port:   4000,
 		engine: engines.NewGoogleSearchEngine(),
-		dbURL:  "postgres://postgres:my_password@localhost:5432/sqlctest?sslmode=disable",
+		dbURL:  "postgres://postgres:my_password@localhost:5432/leader?sslmode=disable",
 	}
 }
 

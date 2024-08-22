@@ -12,32 +12,25 @@ import (
 )
 
 const createEmail = `-- name: CreateEmail :one
-INSERT INTO emails (website_id, email, subject, date)
-VALUES ($1, $2, $3, $4)
-RETURNING id, website_id, email, subject, date
+INSERT INTO emails (website_id, email, date)
+VALUES ($1, $2, $3)
+RETURNING id, website_id, email, date
 `
 
 type CreateEmailParams struct {
 	WebsiteID pgtype.Int8
 	Email     string
-	Subject   pgtype.Text
 	Date      pgtype.Timestamptz
 }
 
 // Create a new email entry for a website
 func (q *Queries) CreateEmail(ctx context.Context, arg CreateEmailParams) (Email, error) {
-	row := q.db.QueryRow(ctx, createEmail,
-		arg.WebsiteID,
-		arg.Email,
-		arg.Subject,
-		arg.Date,
-	)
+	row := q.db.QueryRow(ctx, createEmail, arg.WebsiteID, arg.Email, arg.Date)
 	var i Email
 	err := row.Scan(
 		&i.ID,
 		&i.WebsiteID,
 		&i.Email,
-		&i.Subject,
 		&i.Date,
 	)
 	return i, err
@@ -136,14 +129,13 @@ func (q *Queries) CreateWebsite(ctx context.Context, arg CreateWebsiteParams) (W
 	return i, err
 }
 
-const deleteEmailsByWebsiteID = `-- name: DeleteEmailsByWebsiteID :exec
+const deleteEmail = `-- name: DeleteEmail :exec
 DELETE FROM emails
-WHERE website_id = $1
+WHERE id = $1
 `
 
-// Delete emails by website ID
-func (q *Queries) DeleteEmailsByWebsiteID(ctx context.Context, websiteID pgtype.Int8) error {
-	_, err := q.db.Exec(ctx, deleteEmailsByWebsiteID, websiteID)
+func (q *Queries) DeleteEmail(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteEmail, id)
 	return err
 }
 
@@ -191,13 +183,30 @@ func (q *Queries) DeleteWebsitesBySearchHistoryID(ctx context.Context, searchHis
 	return err
 }
 
+const getEmailByID = `-- name: GetEmailByID :one
+SELECT id, website_id, email, date
+FROM emails
+WHERE id = $1
+`
+
+func (q *Queries) GetEmailByID(ctx context.Context, id int64) (Email, error) {
+	row := q.db.QueryRow(ctx, getEmailByID, id)
+	var i Email
+	err := row.Scan(
+		&i.ID,
+		&i.WebsiteID,
+		&i.Email,
+		&i.Date,
+	)
+	return i, err
+}
+
 const getEmailsByWebsiteID = `-- name: GetEmailsByWebsiteID :many
-SELECT id, website_id, email, subject, date
+SELECT id, website_id, email, date
 FROM emails
 WHERE website_id = $1
 `
 
-// Get emails by website ID
 func (q *Queries) GetEmailsByWebsiteID(ctx context.Context, websiteID pgtype.Int8) ([]Email, error) {
 	rows, err := q.db.Query(ctx, getEmailsByWebsiteID, websiteID)
 	if err != nil {
@@ -211,7 +220,6 @@ func (q *Queries) GetEmailsByWebsiteID(ctx context.Context, websiteID pgtype.Int
 			&i.ID,
 			&i.WebsiteID,
 			&i.Email,
-			&i.Subject,
 			&i.Date,
 		); err != nil {
 			return nil, err
@@ -506,6 +514,31 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateEmail = `-- name: UpdateEmail :one
+UPDATE emails
+SET email = $2, date = $3
+WHERE id = $1
+RETURNING id, website_id, email, date
+`
+
+type UpdateEmailParams struct {
+	ID    int64
+	Email string
+	Date  pgtype.Timestamptz
+}
+
+func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) (Email, error) {
+	row := q.db.QueryRow(ctx, updateEmail, arg.ID, arg.Email, arg.Date)
+	var i Email
+	err := row.Scan(
+		&i.ID,
+		&i.WebsiteID,
+		&i.Email,
+		&i.Date,
+	)
+	return i, err
 }
 
 const updateMessage = `-- name: UpdateMessage :one

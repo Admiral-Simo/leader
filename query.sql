@@ -121,17 +121,26 @@ WHERE search_history_id = $1;
 
 -- Create a new email entry for a website
 -- name: CreateEmail :one
-INSERT INTO emails (website_id, email, subject, date)
-VALUES ($1, $2, $3, $4)
-RETURNING id, website_id, email, subject, date;
+INSERT INTO emails (website_id, email, date)
+VALUES ($1, $2, $3)
+RETURNING id, website_id, email, date;
 
--- Get emails by website ID
+-- name: GetEmailByID :one
+SELECT id, website_id, email, date
+FROM emails
+WHERE id = $1;
+
 -- name: GetEmailsByWebsiteID :many
-SELECT id, website_id, email, subject, date
+SELECT id, website_id, email, date
 FROM emails
 WHERE website_id = $1;
 
--- Delete emails by website ID
--- name: DeleteEmailsByWebsiteID :exec
+-- name: UpdateEmail :one
+UPDATE emails
+SET email = $2, date = $3
+WHERE id = $1
+RETURNING id, website_id, email, date;
+
+-- name: DeleteEmail :exec
 DELETE FROM emails
-WHERE website_id = $1;
+WHERE id = $1;

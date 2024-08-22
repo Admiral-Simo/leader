@@ -81,14 +81,14 @@ func Routes(h handler.Handler) {
 	})
 	h.App.GET("/logout", func(ctx *gin.Context) {
 		ctx.SetCookie("auth_cookie", "", -1, "/", "", false, true)
-        ctx.Redirect(http.StatusSeeOther, "/about")
+		ctx.Redirect(http.StatusSeeOther, "/about")
 	})
 }
 
 func checkForCredentials(name string, email string, pass string) map[string]string {
 	formErrors := make(map[string]string)
-	if len(name) < 3 {
-		formErrors["name"] = "name needs to be more than 2 characters."
+	if len(strings.Fields(name)) < 2 {
+		formErrors["name"] = "please enter your first_name and last_name."
 	}
 	if len(email) < 3 || !strings.Contains(email, "@") || !strings.Contains(email[strings.Index(email, "@"):], ".") {
 		formErrors["name"] = "email needs to be valid (e.g. example@gmail.com)."

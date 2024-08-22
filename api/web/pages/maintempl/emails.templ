@@ -1,59 +1,63 @@
 package maintempl
 
+import "server/api/web/layout"
+
 func isEmptyMap(data map[string]map[string]struct{}) bool {
 	return len(data) == 0
 }
 
 templ EmailList(data map[string]map[string]struct{}) {
-	if isEmptyMap(data) {
-		<div class="flex items-center justify-center min-h-screen">
-			<div class="text-center space-y-4">
-				<h1 class="text-5xl font-bold text-gray-800">No Emails Found.</h1>
-				<button
-					hx-get="/"
-					hx-target="body"
-					class="py-2 px-6 rounded-md bg-purple-600 text-white hover:bg-purple-700 transition duration-300"
-				>
-					Try Again
-				</button>
-			</div>
-		</div>
-	} else {
-		<div class="max-w-4xl mx-auto py-10">
-			<div class="space-y-6">
-				for website, emails := range data {
-					<div
-						x-data="{ show: false }"
-						class="bg-white p-6 rounded-lg shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+	@layout.Base("emails") {
+		if isEmptyMap(data) {
+			<div class="flex items-center justify-center min-h-screen">
+				<div class="text-center space-y-4">
+					<h1 class="text-5xl font-bold text-gray-800">No Emails Found.</h1>
+					<button
+						hx-get="/"
+						hx-target="body"
+						class="py-2 px-6 rounded-md bg-purple-600 text-white hover:bg-purple-700 transition duration-300"
 					>
-						<!-- Render website section -->
-						<div class="font-bold text-xl text-purple-700 flex justify-between items-center mb-4">
-							<a
-								href={ templ.SafeURL(website) }
-								target="_blank"
-								class="hover:text-purple-900 transition duration-300"
-							>
-								{ website }
-							</a>
-							<button
-								@click="show = !show"
-								class="text-sm text-blue-600 underline hover:text-blue-800 transition duration-300"
-							>
-								<span x-text="show ? 'Hide Emails' : 'Show Emails'"></span>
-							</button>
-						</div>
-						<!-- Render each email under the website -->
-						<div x-transition x-show="show" class="space-y-4">
-							for email := range emails {
-								<div class="ml-6">
-									@EmailComponent(email)
-								</div>
-							}
-						</div>
-					</div>
-				}
+						Try Again
+					</button>
+				</div>
 			</div>
-		</div>
+		} else {
+			<div class="max-w-4xl mx-auto py-10">
+				<div class="space-y-6">
+					for website, emails := range data {
+						<div
+							x-data="{ show: false }"
+							class="bg-white p-6 rounded-lg shadow-md transition duration-300 ease-in-out hover:shadow-lg"
+						>
+							<!-- Render website section -->
+							<div class="font-bold text-xl text-purple-700 flex justify-between items-center mb-4">
+								<a
+									href={ templ.SafeURL(website) }
+									target="_blank"
+									class="hover:text-purple-900 transition duration-300"
+								>
+									{ website }
+								</a>
+								<button
+									@click="show = !show"
+									class="text-sm text-blue-600 underline hover:text-blue-800 transition duration-300"
+								>
+									<span x-text="show ? 'Hide Emails' : 'Show Emails'"></span>
+								</button>
+							</div>
+							<!-- Render each email under the website -->
+							<div x-transition x-show="show" class="space-y-4">
+								for email := range emails {
+									<div class="ml-6">
+										@EmailComponent(email)
+									</div>
+								}
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		}
 	}
 }
 

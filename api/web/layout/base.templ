@@ -80,9 +80,9 @@ templ Navbar() {
 					<div @click="showLogout = !showLogout" class="relative flex items-center space-x-3 cursor-pointer">
 						<!-- Avatar -->
 						<div
-							class="flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-3xl font-bold rounded-full shadow-lg w-14 h-14"
+							class="relative inline-flex items-center justify-center size-10 overflow-hidden rounded-full bg-orange-600"
 						>
-							{ string(user.Name[0]) }
+							<span class="font-medium text-gray-600 dark:text-gray-300">{ string(user.Name[:2]) }</span>
 						</div>
 						<!-- Logout Button -->
 						<div
@@ -163,10 +163,10 @@ templ Navbar() {
 				<div @click="showLogout = !showLogout" class="relative flex items-center space-x-3 px-4 py-3 cursor-pointer">
 					<!-- Avatar -->
 					<div
-						class="flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-3xl font-bold rounded-full shadow-lg w-14 h-14"
-					>
-						{ string(user.Name[0]) }
-					</div>
+							class="relative inline-flex items-center justify-center size-10 overflow-hidden rounded-full bg-orange-600"
+						>
+							<span class="font-medium text-gray-600 dark:text-gray-300">{ string(user.Name[:2]) }</span>
+						</div>
 					<!-- Mobile Logout Button -->
 					<div
 						x-show="showLogout"

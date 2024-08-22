@@ -12,7 +12,6 @@ type Email struct {
 	ID        int64
 	WebsiteID pgtype.Int8
 	Email     string
-	Subject   pgtype.Text
 	Date      pgtype.Timestamptz
 }
 
