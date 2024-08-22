@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"server/api/handler"
+	"server/api/middleware"
 	"server/engines"
 	"server/store"
 
@@ -28,7 +30,7 @@ type APIBuilder struct {
 
 func NewAPIBuilder() *APIBuilder {
 	return &APIBuilder{
-        port: 4000,
+		port:   4000,
 		engine: engines.NewGoogleSearchEngine(),
 		dbURL:  "postgres://postgres:my_password@localhost:5432/sqlctest?sslmode=disable",
 	}
@@ -79,4 +81,10 @@ func (a *API) StartServer() {
 }
 
 func (a *API) registerMiddlewares() {
+	h := handler.Handler{
+		Store:        a.store,
+		SearchEngine: &a.engine,
+		App:          a.app,
+	}
+	a.app.Use(middleware.JWTAuthMiddleware(h))
 }

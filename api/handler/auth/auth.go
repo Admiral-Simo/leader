@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"server/api/cookies"
 	"server/api/handler"
 	"server/api/web/pages/authtempl"
 	"server/store"
@@ -34,7 +35,7 @@ func Routes(h handler.Handler) {
 			return
 		}
 		// Create User
-		_, err = h.Store.CreateUser(ctx, store.CreateUserParams{
+		user, err := h.Store.CreateUser(ctx, store.CreateUserParams{
 			Name:     name,
 			Email:    email,
 			Password: password,
@@ -44,6 +45,13 @@ func Routes(h handler.Handler) {
 			fmt.Println("error creating user.")
 			return
 		}
+		// this is the safe part
+		tokenString, err := cookies.GenerateJWT(user.ID)
+		if err != nil {
+			panic("unable to generate jwt")
+		}
+		ctx.SetCookie("auth_cookie", tokenString, 3600*24*3, "/", "", false, true)
+		// TODO: return a cookie that has a json web token that has the userID
 		ctx.Redirect(http.StatusSeeOther, "/")
 	})
 	h.App.POST("/login", func(ctx *gin.Context) {
@@ -57,11 +65,19 @@ func Routes(h handler.Handler) {
 			authtempl.Login(errorMessage).Render(ctx, ctx.Writer)
 			return
 		}
-		if user.Password == password {
-			ctx.Redirect(http.StatusSeeOther, "/")
+		if user.Password != password {
+			errorMessage := errors.New("email or password is incorrect.")
+			authtempl.Login(errorMessage).Render(ctx, ctx.Writer)
 			return
 		}
-		fmt.Println("incorrect password")
+		// this is the safe part
+		tokenString, err := cookies.GenerateJWT(user.ID)
+		if err != nil {
+			panic("unable to generate jwt")
+		}
+		ctx.SetCookie("auth_cookie", tokenString, 3600*24*3, "/", "", false, true)
+		// TODO: return a cookie that has a json web token that has the userID
+		ctx.Redirect(http.StatusSeeOther, "/")
 	})
 }
 
