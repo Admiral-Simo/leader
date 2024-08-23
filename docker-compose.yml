@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  leader:
+    image: postgres:15
+    container_name: leader
+    environment:
+      POSTGRES_DB: leader
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: strongpassword
+    ports:
+      - "5433:5432"  # Map port 5432 inside the container to port 5433 on the host
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - leader
+    ports:
+      - "8080:8080"  # Map port 80 in the container to port 8080 on the host
+
+volumes:
+  pgdata:
