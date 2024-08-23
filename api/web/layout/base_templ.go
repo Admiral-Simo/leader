@@ -111,7 +111,7 @@ func Navbar() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-10 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-5 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -139,7 +139,7 @@ func Navbar() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Mobile Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-10 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Mobile Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-5 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
