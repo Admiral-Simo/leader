@@ -2,7 +2,6 @@ package engines
 
 import (
 	"fmt"
-	"math/rand"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -17,23 +16,13 @@ type GoogleSearchEngine struct {
 	emailCollector   *colly.Collector
 }
 
-func getRandomUserAgent() string {
-	userAgents := []string{
-		"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-		"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-		// Add more User-Agents as needed
-	}
-	return userAgents[rand.Intn(len(userAgents))]
-}
-
 func NewGoogleSearchEngine() *GoogleSearchEngine {
 	re := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
 
 	websiteCollector := colly.NewCollector(
 		colly.AllowedDomains("www.google.com"),
-		colly.UserAgent(getRandomUserAgent()), // Use a random User-Agent
-		colly.Async(true),                     // Enable asynchronous requests
+		colly.UserAgent("Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"),
+		colly.Async(true), // Enable asynchronous requests
 	)
 
 	emailCollector := colly.NewCollector(colly.Async(true))
@@ -53,6 +42,7 @@ func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
 
 	// On every anchor element which has an href attribute call the callback
 	g.websiteCollector.OnHTML("a", func(e *colly.HTMLElement) {
+		fmt.Println(e)
 		href := e.Attr("href")
 		if strings.HasPrefix(href, "/url?q=") {
 			// Extract the URL from the href attribute
@@ -69,6 +59,8 @@ func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
 		searchURL := fmt.Sprintf("https://www.google.com/search?q=%s&start=%d", query, start)
 		g.websiteCollector.Visit(searchURL)
 	}
+
+	g.websiteCollector.Wait()
 	return websites
 }
 
@@ -77,6 +69,8 @@ func (g GoogleSearchEngine) GetEmailsAddressByQuery(query string) map[string]map
 	query = strings.ReplaceAll(query, " ", "+")
 
 	websites := g.GetWebsitesByQuery(query)
+
+	fmt.Println(websites)
 	emailData := make(map[string]map[string]struct{})
 	var mu sync.Mutex
 	var wg sync.WaitGroup
