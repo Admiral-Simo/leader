@@ -88,7 +88,7 @@ func (q *Queries) CreateSearchHistory(ctx context.Context, arg CreateSearchHisto
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (name, email, password)
 VALUES ($1, $2, $3)
-RETURNING id, name, email, password
+RETURNING id, name, email, password, credits
 `
 
 type CreateUserParams struct {
@@ -106,6 +106,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Name,
 		&i.Email,
 		&i.Password,
+		&i.Credits,
 	)
 	return i, err
 }
@@ -356,7 +357,7 @@ func (q *Queries) GetSearchHistoryByUserID(ctx context.Context, userID pgtype.In
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 WHERE email = $1
 `
@@ -370,12 +371,13 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Name,
 		&i.Email,
 		&i.Password,
+		&i.Credits,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 WHERE id = $1
 `
@@ -389,6 +391,7 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 		&i.Name,
 		&i.Email,
 		&i.Password,
+		&i.Credits,
 	)
 	return i, err
 }
@@ -485,7 +488,7 @@ func (q *Queries) ListSearchHistory(ctx context.Context) ([]SearchHistory, error
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 ORDER BY id
 `
@@ -505,6 +508,7 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 			&i.Name,
 			&i.Email,
 			&i.Password,
+			&i.Credits,
 		); err != nil {
 			return nil, err
 		}
@@ -514,6 +518,17 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const subtractCreditsByUserID = `-- name: SubtractCreditsByUserID :exec
+UPDATE users
+SET credits = credits - 5
+WHERE id = $1
+`
+
+func (q *Queries) SubtractCreditsByUserID(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, subtractCreditsByUserID, id)
+	return err
 }
 
 const updateEmail = `-- name: UpdateEmail :one
@@ -575,9 +590,9 @@ func (q *Queries) UpdateMessage(ctx context.Context, arg UpdateMessageParams) (U
 
 const updateUser = `-- name: UpdateUser :one
 UPDATE users
-SET name = $2, email = $3, password = $4
+SET name = $2, email = $3, password = $4, credits = $5
 WHERE id = $1
-RETURNING id, name, email, password
+RETURNING id, name, email, password, credits
 `
 
 type UpdateUserParams struct {
@@ -585,6 +600,7 @@ type UpdateUserParams struct {
 	Name     string
 	Email    string
 	Password string
+	Credits  pgtype.Int4
 }
 
 // Update a user's name, email, and password by ID
@@ -594,6 +610,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		arg.Name,
 		arg.Email,
 		arg.Password,
+		arg.Credits,
 	)
 	var i User
 	err := row.Scan(
@@ -601,6 +618,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 		&i.Name,
 		&i.Email,
 		&i.Password,
+		&i.Credits,
 	)
 	return i, err
 }

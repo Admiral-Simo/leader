@@ -4,6 +4,11 @@ INSERT INTO user_messages (name, email, message)
 VALUES ($1, $2, $3)
 RETURNING id, name, email, message;
 
+-- name: SubtractCreditsByUserID :exec
+UPDATE users
+SET credits = credits - 5
+WHERE id = $1;
+
 -- Get a message by ID
 -- name: GetMessageByID :one
 SELECT id, name, email, message
@@ -39,26 +44,26 @@ ORDER BY id;
 -- name: CreateUser :one
 INSERT INTO users (name, email, password)
 VALUES ($1, $2, $3)
-RETURNING id, name, email, password;
+RETURNING id, name, email, password, credits;
 
 -- Get a user by ID
 -- name: GetUserByID :one
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 WHERE id = $1;
 
 -- Get a user by email
 -- name: GetUserByEmail :one
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 WHERE email = $1;
 
 -- Update a user's name, email, and password by ID
 -- name: UpdateUser :one
 UPDATE users
-SET name = $2, email = $3, password = $4
+SET name = $2, email = $3, password = $4, credits = $5
 WHERE id = $1
-RETURNING id, name, email, password;
+RETURNING id, name, email, password, credits;
 
 -- Delete a user by ID
 -- name: DeleteUser :exec
@@ -67,7 +72,7 @@ WHERE id = $1;
 
 -- List all users
 -- name: ListUsers :many
-SELECT id, name, email, password
+SELECT id, name, email, password, credits
 FROM users
 ORDER BY id;
 

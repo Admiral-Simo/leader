@@ -27,6 +27,7 @@ type User struct {
 	Name     string
 	Email    string
 	Password string
+	Credits  pgtype.Int4
 }
 
 type UserMessage struct {
