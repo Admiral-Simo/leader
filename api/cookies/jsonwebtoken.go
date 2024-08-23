@@ -7,7 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var mySigningKey = []byte("my_password")
+var mySigningKey = []byte("strongpassword")
 
 func GenerateJWT(id int64) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{

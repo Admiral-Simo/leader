@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	dbURL := "postgres://postgres:my_password@localhost:5432/leader?sslmode=disable"
+	dbURL := "postgres://postgres:strongpassword@localhost:5432/leader?sslmode=disable"
 
 	ctx := context.Background()
 
