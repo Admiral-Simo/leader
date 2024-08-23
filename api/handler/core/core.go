@@ -29,8 +29,8 @@ func Routes(h handler.Handler) {
 		}
 
 		result := h.SearchEngine.GetEmailsAddressByQuery(keyword)
+		fmt.Println("result:", result)
 		createHistory(user.ID, keyword, result, h, ctx)
-		fmt.Println("user credits left:")
 		maintempl.EmailList(result).Render(ctx, ctx.Writer)
 	})
 }

@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"server/api/cookies"
 	"server/api/handler"
@@ -25,7 +24,9 @@ func Routes(h handler.Handler) {
 		// Check if user already exists
 		_, err := h.Store.GetUserByEmail(ctx, email)
 		if err == nil {
-			fmt.Println("user already exists.")
+			errorForm := make(map[string]string)
+			errorForm["name"] = "user already exists."
+			authtempl.SignUp(errorForm).Render(ctx, ctx.Writer)
 			return
 		}
 		// Check for credentials
@@ -42,7 +43,9 @@ func Routes(h handler.Handler) {
 		})
 		// Checking for creation errors
 		if err != nil {
-			fmt.Println(err)
+			errorForm := make(map[string]string)
+			errorForm["name"] = "internal server error."
+			authtempl.SignUp(errorForm).Render(ctx, ctx.Writer)
 			return
 		}
 		// this is the safe part
