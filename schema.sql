@@ -12,8 +12,7 @@ CREATE TABLE search_history (
   id         BIGSERIAL PRIMARY KEY,
   user_id    BIGINT REFERENCES users(id) ON DELETE CASCADE,
   keyword    TEXT NOT NULL,
-  search_time TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id, keyword)
+  search_time TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Create websites table

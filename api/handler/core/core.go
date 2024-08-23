@@ -20,19 +20,32 @@ func Routes(h handler.Handler) {
 			return
 		}
 		// engine = massive energy
+		user := ctx.Value("user").(store.User)
+
+		if user.Credits.Int32 < 5 {
+			err := fmt.Errorf("please fill your credit points.")
+			maintempl.Home(err).Render(ctx, ctx.Writer)
+			return
+		}
+
 		result := h.SearchEngine.GetEmailsAddressByQuery(keyword)
-		createHistory(keyword, result, h, ctx)
+		createHistory(user.ID, keyword, result, h, ctx)
+		fmt.Println("user credits left:")
 		maintempl.EmailList(result).Render(ctx, ctx.Writer)
 	})
 }
 
-func createHistory(keyword string, result map[string]map[string]struct{}, h handler.Handler, ctx *gin.Context) {
-	userID := ctx.Value("user").(store.User).ID
+func createHistory(userID int64, keyword string, result map[string]map[string]struct{}, h handler.Handler, ctx *gin.Context) {
+	if len(result) == 0 {
+		return
+	}
 
 	searchHistory, _ := h.Store.CreateSearchHistory(ctx, store.CreateSearchHistoryParams{
 		UserID:  pgtype.Int8{Int64: userID, Valid: true},
 		Keyword: keyword,
 	})
+
+	h.Store.SubtractCreditsByUserID(ctx, userID)
 
 	for website, emails := range result {
 		webRef, _ := h.Store.CreateWebsite(ctx, store.CreateWebsiteParams{

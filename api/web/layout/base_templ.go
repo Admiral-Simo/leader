@@ -43,7 +43,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><!-- Tailwind CSS CDN --><script src=\"https://cdn.tailwindcss.com\"></script><!-- AlpineJS CDN --><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js\"></script><!-- HTMX CDN --><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><!-- Font --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap\" rel=\"stylesheet\"><style>\n    body {\n font-family: \"Work Sans\", sans-serif;\n    }\n    </style></head><body class=\"bg-gradient-to-r from-indigo-100 to-purple-100\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><!-- Tailwind CSS CDN --><script src=\"https://cdn.tailwindcss.com\"></script><!-- AlpineJS CDN --><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js\"></script><!-- HTMX CDN --><script src=\"https://unpkg.com/htmx.org@2.0.2\" integrity=\"sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ\" crossorigin=\"anonymous\"></script><!-- Font --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap\" rel=\"stylesheet\"><style>\n        body {\n            font-family: \"Work Sans\", sans-serif;\n        }\n    </style></head><body class=\"bg-gradient-to-r from-indigo-100 to-purple-100\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -98,20 +98,33 @@ func Navbar() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if user, ok := ctx.Value("user").(store.User); ok {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- Profile Button --> <a hx-get=\"/history\" hx-target=\"body\" class=\"text-orange-200 text-lg hover:text-orange-500 transition duration-300 cursor-pointer\">History</a><div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 cursor-pointer\"><!-- Avatar --><div class=\"relative inline-flex items-center justify-center size-10 overflow-hidden rounded-full bg-orange-600\"><span class=\"font-medium text-gray-600 dark:text-gray-300\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- History Button --> <a hx-get=\"/history\" hx-target=\"body\" class=\"text-orange-200 text-lg hover:text-orange-500 transition duration-300 cursor-pointer\">History</a><!-- Profile and Logout Dropdown --> <div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 cursor-pointer\"><!-- Avatar --><div class=\"relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full bg-orange-600\"><span class=\"font-medium text-gray-200\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[:2]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 89, Col: 102}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 91, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-5 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Credits Info --><div class=\"text-yellow-500 font-bold flex items-center -space-x-1.5\"><p>Credits left: ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(ctx.Value("user").(store.User).Credits.Int32)))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 95, Col: 102}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><img class=\"h-10\" src=\"public/coin.png\"></div><!-- Logout Dropdown --><div x-show=\"showLogout\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 scale-90\" x-transition:enter-end=\"opacity-100 scale-100\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 scale-100\" x-transition:leave-end=\"opacity-0 scale-90\" class=\"absolute top-3 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center w-36\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 w-full text-center text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -126,20 +139,33 @@ func Navbar() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if user, ok := ctx.Value("user").(store.User); ok {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- Mobile Profile Button --> <div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 px-4 py-3 cursor-pointer\"><!-- Avatar --><div class=\"relative inline-flex items-center justify-center size-10 overflow-hidden rounded-full bg-orange-600\"><span class=\"font-medium text-gray-600 dark:text-gray-300\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!-- Mobile Profile and Logout --> <div @click=\"showLogout = !showLogout\" class=\"relative flex items-center space-x-3 px-4 py-3 cursor-pointer\"><!-- Avatar --><div class=\"relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full bg-orange-600\"><span class=\"font-medium text-gray-200\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[:2]))
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(string(user.Name[:2]))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 137, Col: 98}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 142, Col: 79}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Mobile Logout Button --><div x-show=\"showLogout\" x-transition:enter=\"transition transform ease-out duration-300\" x-transition:enter-start=\"translate-y-4 opacity-0\" x-transition:enter-end=\"translate-y-0 opacity-100\" x-transition:leave=\"transition transform ease-in duration-300\" x-transition:leave-start=\"translate-y-0 opacity-100\" x-transition:leave-end=\"translate-y-4 opacity-0\" class=\"absolute top-5 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><!-- Credits Info --><div class=\"text-yellow-500 font-bold flex items-center -space-x-1.5\"><p>Credits left: ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(ctx.Value("user").(store.User).Credits.Int32)))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 146, Col: 102}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><img class=\"h-10\" src=\"public/coin.png\"></div><!-- Logout Dropdown --><div x-show=\"showLogout\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 scale-90\" x-transition:enter-end=\"opacity-100 scale-100\" x-transition:leave=\"transition ease-in duration-200\" x-transition:leave-start=\"opacity-100 scale-100\" x-transition:leave-end=\"opacity-0 scale-90\" class=\"absolute top-3 left-0 mt-2 bg-white text-indigo-600 rounded-md shadow-lg p-2 flex flex-col items-center w-full\"><a hx-get=\"/logout\" hx-target=\"body\" class=\"block px-4 py-2 w-full text-center text-indigo-600 hover:bg-gray-100 transition duration-300 cursor-pointer\">Logout</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -170,21 +196,21 @@ func Footer() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var6 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var6 == nil {
-			templ_7745c5c3_Var6 = templ.NopComponent
+		templ_7745c5c3_Var8 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var8 == nil {
+			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<footer class=\"bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-6\"><div class=\"container mx-auto text-center\"><p class=\"text-sm\">&copy; ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(time.Now().Year()))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 162, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 172, Col: 67}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

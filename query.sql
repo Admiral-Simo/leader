@@ -6,7 +6,7 @@ RETURNING id, name, email, message;
 
 -- name: SubtractCreditsByUserID :exec
 UPDATE users
-SET credits = credits - 5
+SET credits = credits - 90
 WHERE id = $1;
 
 -- Get a message by ID
