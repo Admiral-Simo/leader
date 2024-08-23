@@ -3,7 +3,8 @@ CREATE TABLE users (
   id       BIGSERIAL PRIMARY KEY,
   name     TEXT NOT NULL,
   email    TEXT NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  credits  INTEGER DEFAULT 100
 );
 
 -- Create search_history table
