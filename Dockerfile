@@ -10,11 +10,16 @@ COPY . .
 
 RUN go build -o webapp ./cmd/webapp/main.go
 
-FROM alpine:latest
+FROM debian:bullseye-slim
 
-RUN apk add --no-cache libc6-compat
+RUN apt-get update && apt-get install -y \
+    libc6 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
 
 COPY --from=builder /app/webapp /usr/local/bin/webapp
+COPY --from=builder /app/public /app/public
 
 EXPOSE 8080
 
