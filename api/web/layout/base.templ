@@ -38,7 +38,7 @@ templ Base(title string) {
     <div class="relative min-h-screen">
         <!-- Spinner Overlay -->
         <div id="spinner-overlay"
-            class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden">
+            class="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
             <div class="flex space-x-2 justify-center items-center h-screen dark:invert">
                 <span class="sr-only">Loading...</span>
                 <div class="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
@@ -143,9 +143,9 @@ templ Navbar() {
             </div>
             <!-- Credits Info -->
             <div class="text-yellow-500 font-bold flex items-center -space-x-1.5">
-                    <p>Credits left: { strconv.Itoa(int(ctx.Value("user").(store.User).Credits.Int32)) }</p> <img
-                        class="h-10" src="public/coin.png" />
-                </div>
+                <p>Credits left: { strconv.Itoa(int(ctx.Value("user").(store.User).Credits.Int32)) }</p> <img
+                    class="h-10" src="public/coin.png" />
+            </div>
             <!-- Logout Dropdown -->
             <div x-show="showLogout" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
