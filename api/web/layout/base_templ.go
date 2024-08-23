@@ -51,7 +51,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative min-h-screen\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden\"><div class=\"flex space-x-2 justify-center items-center h-screen dark:invert\"><span class=\"sr-only\">Loading...</span><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce\"></div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"relative min-h-screen\"><!-- Spinner Overlay --><div id=\"spinner-overlay\" class=\"absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50\"><div class=\"flex space-x-2 justify-center items-center h-screen dark:invert\"><span class=\"sr-only\">Loading...</span><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]\"></div><div class=\"h-8 w-8 bg-black rounded-full animate-bounce\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -159,7 +159,7 @@ func Navbar() templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(ctx.Value("user").(store.User).Credits.Int32)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 146, Col: 102}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/layout/base.templ`, Line: 146, Col: 98}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
