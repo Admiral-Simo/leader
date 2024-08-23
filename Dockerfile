@@ -1,4 +1,4 @@
-FROM golang:1.22.4 AS builder
+FROM golang:1.20 AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,9 @@ COPY . .
 
 RUN go build -o webapp ./cmd/webapp/main.go
 
-FROM debian:bullseye-slim
+FROM alpine:latest
+
+RUN apk add --no-cache libc6-compat
 
 COPY --from=builder /app/webapp /usr/local/bin/webapp
 
