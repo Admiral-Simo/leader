@@ -40,7 +40,7 @@ func SignUp(formErrors map[string]string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-center items-center min-h-screen bg-gray-100\"><div class=\"bg-white p-8 rounded-lg shadow-lg w-full max-w-md\"><h2 class=\"text-2xl font-bold mb-6 text-gray-900\">Sign Up</h2><form hx-post=\"/signup\" hx-target=\"body\" class=\"space-y-4\"><div><label for=\"name\" class=\"block text-gray-700 font-medium mb-2\">Full Name</label> <input type=\"text\" id=\"name\" name=\"name\" required class=\"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500\"> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-center items-center min-h-screen\"><div class=\"bg-white p-8 rounded-lg shadow-lg w-full max-w-md\"><h2 class=\"text-2xl font-bold mb-6 text-gray-900\">Sign Up</h2><form hx-post=\"/signup\" hx-target=\"body\" class=\"space-y-4\"><div><label for=\"name\" class=\"block text-gray-700 font-medium mb-2\">Full Name</label> <input type=\"text\" id=\"name\" name=\"name\" required class=\"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500\"> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
