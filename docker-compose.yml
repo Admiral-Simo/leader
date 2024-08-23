@@ -10,21 +10,23 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: strongpassword
       POSTGRES_DB: leader
+      DATABASE_HOST: localhost
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   webapp:
     build: .
-    container_name: go_webapp
     ports:
       - "8080:8080"
     depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://postgres:strongpassword@db:5433/mydb?sslmode=disable
-      GIN_MODE: release
-
+      db:
+        condition: service_healthy
 
 volumes:
   pgdata:

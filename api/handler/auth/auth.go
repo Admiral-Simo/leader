@@ -42,7 +42,7 @@ func Routes(h handler.Handler) {
 		})
 		// Checking for creation errors
 		if err != nil {
-			fmt.Println("error creating user.")
+			fmt.Println(err)
 			return
 		}
 		// this is the safe part
