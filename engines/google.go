@@ -1,6 +1,7 @@
 package engines
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -51,49 +52,55 @@ func NewGoogleSearchEngine() *GoogleSearchEngine {
 }
 
 func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
-    query = strings.ReplaceAll(query, " ", "+")
+	query = strings.ReplaceAll(query, " ", "+")
 
-    var websites []string
-    baseURL := "https://www.googleapis.com/customsearch/v1"
+	var websites []string
+	baseURL := "https://www.googleapis.com/customsearch/v1"
 
-    for start := 1; start <= 100; start += 10 { // Adjust the range to get more results
-        reqURL, err := url.Parse(baseURL)
-        if err != nil {
-            fmt.Println("Error parsing URL:", err)
-            return websites
-        }
-
-        params := url.Values{}
-        params.Add("key", g.apiKey)
-        params.Add("cx", g.cx)
-        params.Add("q", query)
-        params.Add("start", fmt.Sprintf("%d", start)) // Start parameter to paginate results
-        reqURL.RawQuery = params.Encode()
-
-        resp, err := http.Get(reqURL.String())
-        if err != nil {
-            fmt.Println("Error making HTTP request:", err)
-            return websites
-        }
-        defer resp.Body.Close()
-
-        var searchResponse GoogleSearchResponse
-        if err := json.NewDecoder(resp.Body).Decode(&searchResponse); err != nil {
-            fmt.Println("Error decoding JSON response:", err)
-            return websites
-        }
-
-        for _, item := range searchResponse.Items {
-            websites = append(websites, item.Link)
-        }
-
-        // Break early if less than 10 results were returned (meaning no more results)
-        if len(searchResponse.Items) < 10 {
-            break
-        }
+// Skip SSL verification (not recommended for production)
+    tr := &http.Transport{
+        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
     }
+    client := &http.Client{Transport: tr}
 
-    return websites
+	for start := 1; start <= 100; start += 10 { // Adjust the range to get more results
+		reqURL, err := url.Parse(baseURL)
+		if err != nil {
+			fmt.Println("Error parsing URL:", err)
+			return websites
+		}
+
+		params := url.Values{}
+		params.Add("key", g.apiKey)
+		params.Add("cx", g.cx)
+		params.Add("q", query)
+		params.Add("start", fmt.Sprintf("%d", start)) // Start parameter to paginate results
+		reqURL.RawQuery = params.Encode()
+
+		resp, err := client.Get(reqURL.String())
+		if err != nil {
+			fmt.Println("Error making HTTP request:", err)
+			return websites
+		}
+		defer resp.Body.Close()
+
+		var searchResponse GoogleSearchResponse
+		if err := json.NewDecoder(resp.Body).Decode(&searchResponse); err != nil {
+			fmt.Println("Error decoding JSON response:", err)
+			return websites
+		}
+
+		for _, item := range searchResponse.Items {
+			websites = append(websites, item.Link)
+		}
+
+		// Break early if less than 10 results were returned (meaning no more results)
+		if len(searchResponse.Items) < 10 {
+			break
+		}
+	}
+
+	return websites
 }
 
 // GetEmailsAddressByQuery returns a map of email addresses found on websites based on the query.
