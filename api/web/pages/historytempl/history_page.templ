@@ -2,31 +2,50 @@ package historytempl
 
 import "server/api/web/layout"
 import "server/api/handler"
+import "server/store"
 
 templ HistoryPage(history handler.HistoryResult) {
-@layout.Base("Search History") {
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Search History</h1>
-    for _, item := range history.HistoryItems {
-    <div class="mb-6 p-4 border border-gray-300 rounded-lg shadow-sm">
-        <div class="mb-2">
-            <p class="text-lg font-semibold">{ item.Keyword }</p>
-            <p class="text-sm text-gray-500">{ item.SearchTime.Format("02 Jan 2006, 15:04:05") }</p>
-        </div>
-        for _, website := range item.Websites {
-        <div class="mb-2 pl-4">
-            <p class="text-blue-600 underline">{ website.Url }</p>
-            if len(website.Emails) > 0 {
-            <ul class="list-disc list-inside">
-                for _, email := range website.Emails {
-                <li>{ email.Email }</li>
-                }
-            </ul>
-            }
-        </div>
-        }
-    </div>
-    }
-</div>
-}
+	@layout.Base("Search History") {
+		<div class="container mx-auto p-6 pt-12">
+			<div class="flex items-center justify-between mb-8">
+				<h1 class="text-3xl font-extrabold mb-4 text-gray-800">
+					Welcome
+					<span class="capitalize text-red-600">
+						{
+                ctx.Value("user").(store.User).Name }
+					</span>, This Is Your Search History
+				</h1>
+				<button class="py-3 px-5 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-bold shadow-md">
+					Export All Data
+				</button>
+			</div>
+			for _, item := range history.HistoryItems {
+				<div class="mb-8 p-6 border border-gray-200 bg-white rounded-lg shadow-lg flex items-start justify-between">
+					<div>
+						<div class="mb-4">
+							<p class="text-xl font-semibold text-gray-700">{ item.Keyword }</p>
+							<p class="text-sm text-gray-500">{ item.SearchTime.Format("02 Jan 2006, 15:04:05") }</p>
+						</div>
+						<div>
+							for _, website := range item.Websites {
+								<div class="mb-4 pl-4 border-l-2 border-gray-300">
+									<p class="text-blue-500 underline hover:text-blue-700 transition-colors">{ website.Url }</p>
+									if len(website.Emails) > 0 {
+										<ul class="list-disc list-inside text-gray-600">
+											for _, email := range website.Emails {
+												<li>{ email.Email }</li>
+											}
+										</ul>
+									}
+								</div>
+							}
+						</div>
+					</div>
+					<button class="py-3 px-5 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-md">
+						Export Item
+					</button>
+				</div>
+			}
+		</div>
+	}
 }

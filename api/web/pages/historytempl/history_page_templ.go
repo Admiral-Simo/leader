@@ -10,6 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "server/api/web/layout"
 import "server/api/handler"
+import "server/store"
 
 func HistoryPage(history handler.HistoryResult) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -41,21 +42,35 @@ func HistoryPage(history handler.HistoryResult) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto p-4\"><h1 class=\"text-2xl font-bold mb-4\">Search History</h1>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container mx-auto p-6 pt-12\"><div class=\"flex items-center justify-between mb-8\"><h1 class=\"text-3xl font-extrabold mb-4 text-gray-800\">Welcome <span class=\"capitalize text-red-600\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(
+				ctx.Value("user").(store.User).Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 15, Col: 51}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span>, This Is Your Search History</h1><button class=\"py-3 px-5 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-bold shadow-md\">Export All Data</button></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, item := range history.HistoryItems {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-6 p-4 border border-gray-300 rounded-lg shadow-sm\"><div class=\"mb-2\"><p class=\"text-lg font-semibold\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-8 p-6 border border-gray-200 bg-white rounded-lg shadow-lg flex items-start justify-between\"><div><div class=\"mb-4\"><p class=\"text-xl font-semibold text-gray-700\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(item.Keyword)
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(item.Keyword)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 13, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 26, Col: 68}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -63,30 +78,30 @@ func HistoryPage(history handler.HistoryResult) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(item.SearchTime.Format("02 Jan 2006, 15:04:05"))
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(item.SearchTime.Format("02 Jan 2006, 15:04:05"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 14, Col: 94}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 27, Col: 89}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div><div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				for _, website := range item.Websites {
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-2 pl-4\"><p class=\"text-blue-600 underline\">")
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-4 pl-4 border-l-2 border-gray-300\"><p class=\"text-blue-500 underline hover:text-blue-700 transition-colors\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					var templ_7745c5c3_Var5 string
-					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(website.Url)
+					var templ_7745c5c3_Var6 string
+					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(website.Url)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 18, Col: 60}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 32, Col: 95}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -95,7 +110,7 @@ func HistoryPage(history handler.HistoryResult) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					if len(website.Emails) > 0 {
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"list-disc list-inside\">")
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"list-disc list-inside text-gray-600\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -104,12 +119,12 @@ func HistoryPage(history handler.HistoryResult) templ.Component {
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
-							var templ_7745c5c3_Var6 string
-							templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(email.Email)
+							var templ_7745c5c3_Var7 string
+							templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(email.Email)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 22, Col: 33}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `api/web/pages/historytempl/history_page.templ`, Line: 36, Col: 29}
 							}
-							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 							if templ_7745c5c3_Err != nil {
 								return templ_7745c5c3_Err
 							}
@@ -128,7 +143,7 @@ func HistoryPage(history handler.HistoryResult) templ.Component {
 						return templ_7745c5c3_Err
 					}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><button class=\"py-3 px-5 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-bold shadow-md\">Export Item</button></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
