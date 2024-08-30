@@ -57,11 +57,11 @@ func (g GoogleSearchEngine) GetWebsitesByQuery(query string) []string {
 	var websites []string
 	baseURL := "https://www.googleapis.com/customsearch/v1"
 
-// Skip SSL verification (not recommended for production)
-    tr := &http.Transport{
-        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-    }
-    client := &http.Client{Transport: tr}
+	// Skip SSL verification (not recommended for production)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
 
 	for start := 1; start <= 100; start += 10 { // Adjust the range to get more results
 		reqURL, err := url.Parse(baseURL)
